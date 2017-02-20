@@ -50,7 +50,7 @@ namespace BBAPI.Controllers
 		/// <param name="email">Email.</param>
 
 		[HttpPost]
-		public IHttpActionResult CreateUser(string email, string data)
+		public IHttpActionResult CreateUser(string email, [FromBody]string data)
 		{
 			//check if email is correct format
 
