@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
+using System.Net.Http.Formatting;
 
 namespace BBAPI
 {
@@ -19,6 +21,11 @@ namespace BBAPI
 				defaults: new { email = RouteParameter.Optional}
 			);
 
+			GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept",
+				"text/html",
+				StringComparison.InvariantCultureIgnoreCase,
+				true,
+				"application/json"));
 		}
 	}
 }
