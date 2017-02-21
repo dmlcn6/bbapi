@@ -19,7 +19,7 @@
     <h2>Create acct by email</h2>
     <input type="text" id="prodNewId" />
 	<input type="text" id="prodName" />
-	<input type="text" id="prodPassword" />		
+	<input type="text" id="prodPassword" />
     <input type="button" value="Search" onclick="create();" />
 
   </div>
@@ -46,7 +46,7 @@
 
     function findName() {
       var email = $('#prodId').val();
-      $.getJSON(uri + '/' + email)
+      $.getJSON(uri + '/' + email + '/')
           .done(function (data) {
             $('#product').text(formatItem(data));
           })
@@ -60,12 +60,15 @@
 	  var name = $('#prodName').val();
 	  var pw = $('#prodPassword').val();
 	  //var data = '{"name":' +'"'+name+'",' +'"pw":'+ '"'+pw+'"}';
-	  var data = '"name:' + name + ', pw:' + pw+'"';
+
+	  //JSON format should be within " " 
+	  //"anything within quotes "name:darryl,Age:22,"
+	  var data = '"{name:' + name + ', pw:' + pw + '}"';
 	  console.log(data);
 			
 		$.ajax({
 			type: "POST",
-			url: uri + '/' + email,
+			url: uri + '/' + email + '/',
 			data: data,
 			contentType: 'application/json',
 			dataType: "json",
