@@ -60,7 +60,7 @@
 	  var name = $('#prodName').val();
 	  var pw = $('#prodPassword').val();
 	  var data = '{"name":' +'"'+name+'",' +'"pw":'+ '"'+pw+'"}';
-
+	  console.log(data);
 		$.ajax({
 			type: "POST",
 			url: uri + '/' + email,
