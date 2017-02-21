@@ -21,11 +21,17 @@ namespace BBAPI
 				defaults: new { email = RouteParameter.Optional}
 			);
 
+			/*
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept",
 				"text/html",
 				StringComparison.InvariantCultureIgnoreCase,
 				true,
 				"application/json"));
+			*/
+
+			// Remove the XML formatter
+			config.Formatters.Remove(config.Formatters.XmlFormatter);
+
 		}
 	}
 }

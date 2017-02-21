@@ -50,7 +50,7 @@ namespace BBAPI.Controllers
 		/// <param name="email">Email.</param>
 
 		[HttpPost]
-		public IHttpActionResult CreateUser(string email, [FromBody]string data)
+		public IHttpActionResult PostUser(string email, [FromBody]string data)
 		{
 			//check if email is correct format
 
@@ -59,11 +59,16 @@ namespace BBAPI.Controllers
 			//if not create user hash and set
 			if (data != null)
 			{
-				var Newstring = data.ToString();
-				data.
-				return Ok(Newstring);
+
+				return Ok(email + data);
 			}
 			else return Ok("data empty");
+		}
+
+		[HttpPost]
+		public IHttpActionResult PutUser([FromBody]string data)
+		{
+			return Ok("you put" + data);
 		}
 	}
 }
