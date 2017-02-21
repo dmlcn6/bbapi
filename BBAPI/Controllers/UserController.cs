@@ -65,7 +65,7 @@ namespace BBAPI.Controllers
 			else return Ok(email + "data empty");
 		}
 
-		[HttpPost]
+		[HttpPut]
 		public IHttpActionResult PutUser(string email, [FromBody]string data)
 		{
 			return Ok("you put" + data);
