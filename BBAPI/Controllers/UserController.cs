@@ -38,7 +38,7 @@ namespace BBAPI.Controllers
 			var user = users.FirstOrDefault((u) => u.Email == email);
 			if (user == null)
 			{
-				return NotFound();
+				return Ok("User is not here");
 			}
 			return Ok(user);
 		}
@@ -62,11 +62,11 @@ namespace BBAPI.Controllers
 
 				return Ok(email + data);
 			}
-			else return Ok("data empty");
+			else return Ok(email + "data empty");
 		}
 
 		[HttpPost]
-		public IHttpActionResult PutUser([FromBody]string data)
+		public IHttpActionResult PutUser(string email, [FromBody]string data)
 		{
 			return Ok("you put" + data);
 		}

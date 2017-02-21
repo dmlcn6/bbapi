@@ -59,22 +59,22 @@
       var email = $('#prodNewId').val();
 	  var name = $('#prodName').val();
 	  var pw = $('#prodPassword').val();
-	  var data = "{name:" + name + ", pw:" + pw + "}";
+	  var data = 'name:' + name + ', pw:' + pw;
 
 		$.ajax({
 			type: "POST",
 			url: uri + '/' + email,
 			data: data,
-			success: function(){
+			success: function(data){
             		console.log("Pure jQuery Pure JS object");
 					$('#product').text(formatItem(data));
 				},
 			dataType: "json",
-			fail: function(err){
+			fail: function(){
             		console.log("Pure FAIL");
 					$('#product').text('Error: i think you fail' + err);
 				},
-			done: function(err){
+			done: function(){
 					$('#product').text('Error: notsure' + err);
 				} 
 		});
