@@ -52,6 +52,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="StackExchange.Redis">
+      <HintPath>packages\StackExchange.Redis.1.2.0\lib\net45\StackExchange.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -66,6 +70,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\RedisDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

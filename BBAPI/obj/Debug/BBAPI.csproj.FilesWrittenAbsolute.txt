@@ -16,3 +16,4 @@
 /Users/Mr_Lopez/Desktop/bbapi/BBAPI/bin/System.Web.Http.dll
 /Users/Mr_Lopez/Desktop/bbapi/BBAPI/bin/System.Web.Http.WebHost.dll
 /Users/Mr_Lopez/Desktop/bbapi/BBAPI/bin/Newtonsoft.Json.dll
+/Users/Mr_Lopez/Desktop/bbapi/BBAPI/bin/StackExchange.Redis.dll
