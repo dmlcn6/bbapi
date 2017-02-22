@@ -53,7 +53,7 @@ namespace BBAPI.Controllers
 		public IHttpActionResult PostUser(string email, [FromBody]string data)
 		{
 			//if not create user hash and set
-			if (data == null)
+			if (String.IsNullOrEmpty(data))
 			{
 				var resp = "Data is null. Please send formatted data: ";
 				var resp2 = "{name:name}"; 
@@ -76,27 +76,33 @@ namespace BBAPI.Controllers
 			//send to RedisDB
 			var response = RedisDB.createUserHash(key, name, email, password);
 
-			//send error code
-			if (response == -1)
+			if (response != 1)
 			{
-				return Ok("email is empty");
+				//send error code
+				if (response == -1)
+				{
+					return Ok("email is empty");
+				}
+				else if (response == -2)
+				{
+					return Ok("email is not vaild format");
+				}
+				else if (response == -3)
+				{
+					return Ok("email is already registered");
+				}
+				else if (response == -4)
+				{
+					return Ok("some try catch error");
+				}
+				else
+				{
+					return Ok("key sent is empty");
+				}
 			}
-			else if (response == -2)
-			{
-				return Ok("email is not vaild format");
-			}
-			else if (response == -3)
-			{
-				return Ok("email is already registered");
-			}
-			else if (response == -4)
-			{
-				return Ok("some try catch error");
-			}
-			else
-			{
-				return Ok("key sent is empty");
-			}
+
+			//user registered 200 OK HTTP response
+			return Ok("user registered!");
 
 			//store relation "hash" in SQLite
 		}
