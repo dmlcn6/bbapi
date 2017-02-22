@@ -44,25 +44,61 @@ namespace BBAPI.Controllers
 		}
 
 		/// <summary>
-		/// Creates the user.
+		/// Creates the user
 		/// </summary>
-		/// <returns>The user.</returns>
-		/// <param name="email">Email.</param>
+		/// <returns>The user</returns>
+		/// <param name="email">Email</param>
 
 		[HttpPost]
 		public IHttpActionResult PostUser(string email, [FromBody]string data)
 		{
-			//check if email is correct format
+			//if not create user hash and set
+			if (data == null)
+			{
+				var resp = "Data is null. Please send formatted data: ";
+				var resp2 = "{name:name}"; 
+				string emptyResponse = resp + resp2;
+				return Ok(emptyResponse);
+			}
+
+			//create key
+			var key = "user:" + email;
+
+
+
+			//parse email and body data
+			var name = data;
+			var password = data;
 
 			//check if email is taken in db
+			//create hash for new user
+			//store hash in Redis
+			//send to RedisDB
+			var response = RedisDB.createUserHash(key, name, email, password);
 
-			//if not create user hash and set
-			if (data != null)
+			//send error code
+			if (response == -1)
 			{
-
-				return Ok(email + data);
+				return Ok("email is empty");
 			}
-			else return Ok(email + "data empty");
+			else if (response == -2)
+			{
+				return Ok("email is not vaild format");
+			}
+			else if (response == -3)
+			{
+				return Ok("email is already registered");
+			}
+			else if (response == -4)
+			{
+				return Ok("some try catch error");
+			}
+			else
+			{
+				return Ok("key sent is empty");
+			}
+
+			//store relation "hash" in SQLite
 		}
 
 		[HttpPut]
