@@ -70,6 +70,8 @@ namespace BBAPI.Controllers
 			var name = data;
 			var password = data;
 
+			char[]  = { "name:", "password:", '.', ':', '\t' };
+
 			//check if email is taken in db
 			//create hash for new user
 			//store hash in Redis
