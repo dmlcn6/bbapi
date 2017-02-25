@@ -92,7 +92,7 @@ namespace BBAPI.Controllers
 			var key = "user:" + email;
 
 			//parse email and body data
-			char[] delimiterChars = {'{', '}', ','};
+			char[] delimiterChars = {'{', '}', ',', ':'};
 			string[] postParams = data.Split(delimiterChars);
 
 			//if name or password fields are empty
@@ -110,8 +110,8 @@ namespace BBAPI.Controllers
 			var returnString = "user:" + postParams[0] + "pss:" + postParams[1];
 
 			//user registered 200 OK HTTP response
-			//return Ok(returnString);
-			return Ok("hello");
+			return Ok(returnString);
+			//return Ok("hello");
 			//store relation "hash" in SQLite
 		}
 
