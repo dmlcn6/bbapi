@@ -50,7 +50,7 @@ namespace BBAPI.Controllers
         {
 			var data = new HashEntry[] {}; 
 			data = cache.HashGetAll(key);
-			return data[0].ToString();
+			return data.ToString();
         }
 		/*
         public static bool StoreData( string key, string value)
