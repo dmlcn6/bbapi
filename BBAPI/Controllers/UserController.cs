@@ -109,8 +109,8 @@ namespace BBAPI.Controllers
 			var returnString = "user:" + postParams[0] + "pss:" + postParams[1];
 
 			//user registered 200 OK HTTP response
-			return Ok(returnString);
-
+			//return Ok(returnString);
+			return Ok("hello");
 			//store relation "hash" in SQLite
 		}
 
