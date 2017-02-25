@@ -48,8 +48,9 @@ namespace BBAPI.Controllers
         
         public static string getUserData(string key)
         {
-            var data = cache.HashGetAll(key);
-			return data.ToString();
+			var data = new HashEntry[] {}; 
+			data = cache.HashGetAll(key);
+			return data[0].ToString();
         }
 		/*
         public static bool StoreData( string key, string value)
