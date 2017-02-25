@@ -35,12 +35,11 @@ namespace BBAPI.Controllers
 		[HttpGet]
 		public IHttpActionResult GetUser(string email)
 		{
-			var user = users.FirstOrDefault((u) => u.Email == email);
-			if (user == null)
-			{
-				return Ok("User is not here");
-			}
-			return Ok(user);
+			//create key for cache
+			var key = "user:" + email;
+
+			//search for user hash w key in cache
+			return Ok(RedisDB.getUserData(key));
 		}
 
 		/// <summary>
@@ -52,56 +51,54 @@ namespace BBAPI.Controllers
 		[HttpPost]
 		public IHttpActionResult PostUser(string email, [FromBody]string data)
 		{
-			//if not create user hash and set
-			if (String.IsNullOrEmpty(data))
+			//!!![FromBody]!!!
+			//sets post body = data
+
+
+			//check if body is empty, white space or null
+			// or appropriate JSON fields are not in post body
+			if (String.IsNullOrWhiteSpace(data) || String.Equals("{}",data) || !data.Contains("name:") || !data.Contains("password:"))
 			{
 				var resp = "Data is null. Please send formatted data: ";
-				var resp2 = "{name:name}"; 
+				var resp2 = "\"{name:name, password:pw}\""; 
 				string emptyResponse = resp + resp2;
 				return Ok(emptyResponse);
 			}
 
+			//before any logic, make sure email is formatted and unique
+			var emailVerfiyResponse = RedisDB.emailVerify(email);
+
+			if (emailVerfiyResponse != 1)
+			{
+				//send error code
+				switch (emailVerfiyResponse)
+				{
+					case -1:
+						return Ok("email is empty");
+
+					case -2:
+						return Ok("email is not vaild format");
+
+					case -3:
+						return Ok("email is already registered");
+
+					case -4:
+						return Ok("some try catch error");
+				}
+			}
+
+			//email is now verified as avail in cache
 			//create key
 			var key = "user:" + email;
 
-
-
 			//parse email and body data
-			var name = data;
-			var password = data;
+			string[] delimiterChars = { "name:", "password:" };
+			string[] postParams = data.Split(delimiterChars, System.StringSplitOptions.RemoveEmptyEntries);
 
-			string[] delimName = { "name:" };
-			string[] delimPassword = { "password:"};
-			//check if email is taken in db
 			//create hash for new user
 			//store hash in Redis
 			//send to RedisDB
-			var response = RedisDB.createUserHash(key, name, email, password);
-
-			if (response != 1)
-			{
-				//send error code
-				if (response == -1)
-				{
-					return Ok("email is empty");
-				}
-				else if (response == -2)
-				{
-					return Ok("email is not vaild format");
-				}
-				else if (response == -3)
-				{
-					return Ok("email is already registered");
-				}
-				else if (response == -4)
-				{
-					return Ok("some try catch error");
-				}
-				else
-				{
-					return Ok("key sent is empty");
-				}
-			}
+			RedisDB.createUserHash(key, postParams[0], email, postParams[1]);
 
 			//user registered 200 OK HTTP response
 			return Ok("user registered!");

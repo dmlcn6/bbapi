@@ -30,38 +30,23 @@ namespace BBAPI.Controllers
 
         private static IDatabase cache = Connection.GetDatabase();
 
-        public static int createUserHash(string key, string name, string email, string password)
+        public static void createUserHash(string key, string name, string email, string password)
         {
-            //check if fields are empty
-            if(String.IsNullOrEmpty(key)){
-				//send error message
-				return -5;
-            }
+     		//no need to check email here, check in controller
+			SHA512 sha512Hash = SHA512.Create();
+			string salt = Guid.NewGuid().ToString();
+			string saltedPassword = password + salt;
+			saltedPassword = GetSha512Hash(sha512Hash, saltedPassword);
 
-			//verify email status
-			var isVerified = emailVerify(email);
+			cache.HashSet(key, new HashEntry[] { new HashEntry("name", name), new HashEntry("email", email), new HashEntry("password", saltedPassword) });
 
-			if (isVerified != 1)
-			{
-				return isVerified;
-			}
-			else
-			{
-				SHA512 sha512Hash = SHA512.Create();
-				string salt = Guid.NewGuid().ToString();
-				string saltedPassword = password + salt;
-				saltedPassword = GetSha512Hash(sha512Hash, saltedPassword);
-
-				cache.HashSet(key, new HashEntry[] { new HashEntry("name", name), new HashEntry("email", email), new HashEntry("password", saltedPassword) });
-				return 1;
-			}
         }
         public static void updateUserHash(string key, string updatedField, string newValue)
         {
             cache.HashSet(key, new HashEntry[] {new HashEntry(updatedField, newValue)});
         }
         
-        public static string getData(string key)
+        public static string getUserData(string key)
         {
             var data = cache.HashGetAll(key);
 			return data.ToString();
@@ -81,7 +66,7 @@ namespace BBAPI.Controllers
         //close connection needed
 
         //check email validation
-        private static int emailVerify(string email)
+        public static int emailVerify(string email)
         {
 			var key = "user:" + email;
 			 
