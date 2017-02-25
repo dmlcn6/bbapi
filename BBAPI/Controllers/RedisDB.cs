@@ -13,11 +13,11 @@ namespace BBAPI.Controllers
 {
     class RedisDB 
     {
-        private static string azureConn = string.Format("{0}:{1},password={2}", "redis-15918.c8.us-east-1-4.ec2.cloud.redislabs.com",15918,"team11Barbells");
+        private static string windowsVMCache = string.Format("{0}:{1}", "localhost",6379);
 
         private static Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
         {
-            return ConnectionMultiplexer.Connect(azureConn);
+            return ConnectionMultiplexer.Connect(windowsVMCache);
         });
         
         public static ConnectionMultiplexer Connection
