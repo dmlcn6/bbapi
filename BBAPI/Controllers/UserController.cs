@@ -98,8 +98,8 @@ namespace BBAPI.Controllers
 			//if name or password fields are empty
 			if (String.IsNullOrWhiteSpace(postParams[0]) || String.IsNullOrWhiteSpace(postParams[1])) 
 			{ 
-				string postError = "user:" + postParams[2] + "pss:" + postParams[3];
-				return Ok(postError);
+				//string postError = "user=" + postParams[2] + "pss=" + postParams[3];
+				return Ok(postParams);
 			}
 
 			//create hash for new user
