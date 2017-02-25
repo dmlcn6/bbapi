@@ -92,16 +92,24 @@ namespace BBAPI.Controllers
 			var key = "user:" + email;
 
 			//parse email and body data
-			string[] delimiterChars = { "name:", "password:" };
+			string[] delimiterChars = {"name:", "password:", "{", "}"};
 			string[] postParams = data.Split(delimiterChars, System.StringSplitOptions.RemoveEmptyEntries);
+
+			//if name or password fields are empty
+			if (String.IsNullOrWhiteSpace(postParams[0]) || String.IsNullOrWhiteSpace(postParams[1])) 
+			{ 
+				return Ok("name and password fields are required");
+			}
 
 			//create hash for new user
 			//store hash in Redis
 			//send to RedisDB
 			RedisDB.createUserHash(key, postParams[0], email, postParams[1]);
 
+			var returnString = "user:" + postParams[0] + "pss:" + postParams[1];
+
 			//user registered 200 OK HTTP response
-			return Ok("user registered!");
+			return Ok(returnString);
 
 			//store relation "hash" in SQLite
 		}
