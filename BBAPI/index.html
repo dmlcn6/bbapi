@@ -65,25 +65,24 @@
 	  //"anything within quotes "name:darryl,Age:22,"
 	  var data = '"{name:' + name + ', pw:' + pw + '}"';
 	  console.log(data);
-			
-		$.ajax({
-			type: "POST",
-			url: uri + '/' + email + '/',
-			data: data,
-			contentType: 'application/json',
-			dataType: "json",
-			success: function(data){
-            		console.log("Pure jQuery Pure JS object");
-					$('#product').text(formatItem(data));
-				},
-			fail: function(){
-            		console.log("Pure FAIL");
-					$('#product').text('Error: i think you fail' + err);
-				},
-			done: function(){
-					$('#product').text('Error: notsure' + err);
-				} 
-		});
+
+	  var settings = {
+  		"async": true,
+  		"crossDomain": true,
+  		"url": uri + '/' + email + '/',
+  		"method": "POST",
+		"headers": {
+			"content-type": "application/json",
+			"cache-control": "no-cache"
+		},
+		"processData": false,
+		"data":data
+	  }
+
+	  $.ajax(settings).done(function (response) {
+	  	console.log(response);
+	  });
+			 
     }
   </script>
 </body>
