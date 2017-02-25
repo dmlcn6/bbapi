@@ -46,11 +46,32 @@ namespace BBAPI.Controllers
             cache.HashSet(key, new HashEntry[] {new HashEntry(updatedField, newValue)});
         }
         
-        public static string getUserData(string key)
+        public static string getUserData(string email)
         {
-			var data = new HashEntry[] {}; 
-			data = cache.HashGetAll(key);
-			return data.ToString();
+			int emailVerifyResponse = emailVerify(email);
+
+			switch (emailVerifyResponse)
+			{
+				case 1: //means no key exists
+					return "User not found";
+				
+				case -1: //empty email
+					return "Email field empty";
+				
+				case -2: //incorrect format
+					return "Email not formatted correctly";
+				
+				case -3: //means key exists
+					var key = "user:" + email;
+					var data = new HashEntry[] {};
+					data = cache.HashGetAll(key);
+					string getResponse = data[0].ToString() + data[1].ToString();
+					return getResponse;
+				
+				case -4:
+				default:
+					return "try/catch error";
+			}
         }
 		/*
         public static bool StoreData( string key, string value)
@@ -72,7 +93,7 @@ namespace BBAPI.Controllers
 			var key = "user:" + email;
 			 
             //check if fields are empty
-            if(String.IsNullOrEmpty(key))
+			if(String.IsNullOrWhiteSpace(email))
             {
                 //send error message
                 return -1;

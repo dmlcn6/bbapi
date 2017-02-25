@@ -35,11 +35,8 @@ namespace BBAPI.Controllers
 		[HttpGet]
 		public IHttpActionResult GetUser(string email)
 		{
-			//create key for cache
-			var key = "user:" + email;
-
 			//search for user hash w key in cache
-			return Ok(RedisDB.getUserData(key));
+			return Ok(RedisDB.getUserData(email));
 		}
 
 		/// <summary>
