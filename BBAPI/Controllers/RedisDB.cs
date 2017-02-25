@@ -30,6 +30,14 @@ namespace BBAPI.Controllers
 
         private static IDatabase cache = Connection.GetDatabase();
 
+		/// <summary>
+		/// Creates the user hash.
+		/// </summary>
+		/// <param name="key">Key.</param>
+		/// <param name="name">Name.</param>
+		/// <param name="email">Email.</param>
+		/// <param name="password">Password.</param>
+
         public static void createUserHash(string key, string name, string email, string password)
         {
      		//no need to check email here, check in controller
@@ -39,13 +47,26 @@ namespace BBAPI.Controllers
 			saltedPassword = GetSha512Hash(sha512Hash, saltedPassword);
 
 			cache.HashSet(key, new HashEntry[] { new HashEntry("name", name), new HashEntry("email", email), new HashEntry("password", saltedPassword) });
-
         }
+
+		/// <summary>
+		/// Updates the user hash.
+		/// </summary>
+		/// <param name="key">Key.</param>
+		/// <param name="updatedField">Updated field.</param>
+		/// <param name="newValue">New value.</param>
+
         public static void updateUserHash(string key, string updatedField, string newValue)
         {
             cache.HashSet(key, new HashEntry[] {new HashEntry(updatedField, newValue)});
         }
         
+		/// <summary>
+		/// Gets the user data.
+		/// </summary>
+		/// <returns>The user data.</returns>
+		/// <param name="email">Email.</param>
+
         public static string getUserData(string email)
         {
 			int emailVerifyResponse = emailVerify(email);
@@ -53,13 +74,13 @@ namespace BBAPI.Controllers
 			switch (emailVerifyResponse)
 			{
 				case 1: //means no key exists
-					return "User not found";
+					return "User not found.";
 				
 				case -1: //empty email
-					return "Email field empty";
+					return "Email field empty.";
 				
 				case -2: //incorrect format
-					return "Email not formatted correctly";
+					return "Email not formatted correctly.";
 				
 				case -3: //means key exists
 					var key = "user:" + email;
@@ -73,6 +94,7 @@ namespace BBAPI.Controllers
 					return "try/catch error";
 			}
         }
+
 		/*
         public static bool StoreData( string key, string value)
         {
@@ -88,6 +110,12 @@ namespace BBAPI.Controllers
         //close connection needed
 
         //check email validation
+		/// <summary>
+		/// verify the email.
+		/// </summary>
+		/// <returns>The verify code.</returns>
+		/// <param name="email">Email.</param>
+
         public static int emailVerify(string email)
         {
 			var key = "user:" + email;
@@ -126,10 +154,16 @@ namespace BBAPI.Controllers
 			{
 				return -4;
 			}
-            
         }
 
         //Compute a hash using the Sha512 algorithm
+		/// <summary>
+		/// Gets the sha512 hash.
+		/// </summary>
+		/// <returns>The sha512 hash.</returns>
+		/// <param name="sha512Hash">Sha512 hash.</param>
+		/// <param name="input">Input.</param>
+
         private static string GetSha512Hash(SHA512 sha512Hash, string input)
         {
 

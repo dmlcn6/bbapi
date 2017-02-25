@@ -39,11 +39,13 @@ namespace BBAPI.Controllers
 			return Ok(RedisDB.getUserData(email));
 		}
 
+
 		/// <summary>
-		/// Creates the user
+		/// Posts the user.
 		/// </summary>
-		/// <returns>The user</returns>
-		/// <param name="email">Email</param>
+		/// <returns>The user.</returns>
+		/// <param name="email">Email.</param>
+		/// <param name="data">Data.</param>
 
 		[HttpPost]
 		public IHttpActionResult PostUser(string email, [FromBody]string data)
@@ -108,10 +110,17 @@ namespace BBAPI.Controllers
 
 			//user registered 200 OK HTTP response
 			return Ok(returnString);
-			//return Ok("hello");
+
 			//store relation "hash" in SQLite
 		}
 
+
+		/// <summary>
+		/// Puts the user.
+		/// </summary>
+		/// <returns>The user.</returns>
+		/// <param name="email">Email.</param>
+		/// <param name="data">Data.</param>
 		[HttpPut]
 		public IHttpActionResult PutUser(string email, [FromBody]string data)
 		{
