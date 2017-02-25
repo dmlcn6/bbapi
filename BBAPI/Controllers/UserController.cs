@@ -96,18 +96,18 @@ namespace BBAPI.Controllers
 			string[] postParams = data.Split(delimiterChars);
 
 			//if name or password fields are empty
-			if (String.IsNullOrWhiteSpace(postParams[0]) || String.IsNullOrWhiteSpace(postParams[1])) 
-			{ 
-				//string postError = "user=" + postParams[2] + "pss=" + postParams[3];
-				return Ok(postParams);
+			if (String.IsNullOrWhiteSpace(postParams[2]) || String.IsNullOrWhiteSpace(postParams[4])) 
+			{
+				string postError = "user=" + postParams[2] + "pss=" + postParams[3];
+				return Ok(postError);
 			}
 
 			//create hash for new user
 			//store hash in Redis
 			//send to RedisDB
-			RedisDB.createUserHash(key, postParams[0], email, postParams[1]);
+			RedisDB.createUserHash(key, postParams[2], email, postParams[4]);
 
-			var returnString = "user:" + postParams[0] + "pss:" + postParams[1];
+			var returnString = "user:" + postParams[2] + "pss:" + postParams[4];
 
 			//user registered 200 OK HTTP response
 			return Ok(returnString);
